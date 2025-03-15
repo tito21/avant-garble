@@ -93,6 +93,7 @@ function App() {
   return (
     <>
       <header>
+        <img src="logo.svg" alt="Avant Garble Logo" />
         <h1>Avant Garble</h1>
       </header>
       <main>
