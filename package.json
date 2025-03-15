@@ -7,7 +7,7 @@
     "gcp-build": "npm run build",
     "client-build": "cd ./client && npm run build && cd ..",
     "build": "npm run client-build && tsc",
-    "start": "node .",
+    "start": "node --env-file=.env .",
     "dev": "tsx watch --env-file=.env ./src/index.ts"
   },
   "keywords": [],
