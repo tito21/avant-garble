@@ -1,6 +1,12 @@
 # AvantGarble - Dadaist chatbot
 
-Chat with the bot [here](https://google.com)
+<p style="text-align: center;">
+<img src="client/public/logo.svg"/>
+</p>
+
+---
+
+Chat with the bot [here](https://avant-garble-68750635052.europe-west2.run.app)
 
 ## Context
 
@@ -38,4 +44,4 @@ at a character level. The n-grams come from the  Blog Authorship Corpus and are 
 
 Build the bot with `npm run build` and run with `npm run start`.
 
-For deployment I use google cloud run.
+For deployment I use google cloud run synched with Github.

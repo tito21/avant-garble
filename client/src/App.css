@@ -24,7 +24,6 @@ header h1 {
 header img {
   height: 3.2em;
   margin-right: 1em;
-  filter: invert(98%) sepia(59%) saturate(82%) hue-rotate(358deg) brightness(117%) contrast(100%);
 }
 
 main {
