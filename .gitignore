@@ -135,3 +135,4 @@ data/
 ngrams
 .gcloudignore
 app.yaml
+deploy.sh
