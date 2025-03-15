@@ -52,12 +52,12 @@ app.ws('/get-text', (ws, req) => {
         // let num_letters = 5;
         for (let i = 0; i < num_letters; i++) {
             try {
-            let text = await generateText(currentGram, order, 1)
-            ws.send(text);
-            currentGram += text;
-            // console.log("text", text);
-            // console.log("currentGram", currentGram);
-            currentGram = currentGram.slice(currentGram.length - order, currentGram.length);
+                let text = await generateText(currentGram, order, 1)
+                ws.send(text);
+                currentGram += text;
+                // console.log("text", text);
+                // console.log("currentGram", currentGram);
+                currentGram = currentGram.slice(currentGram.length - order, currentGram.length);
             }
             catch (error) {
                 console.error("Error", error);
@@ -71,18 +71,8 @@ app.ws('/get-text', (ws, req) => {
 app.get('/poll-bot', async (req: Request, res: Response) => {
 
 
-    let lastHour = Date.now() - 2 * 60 * 60 * 1000;
+    let lastHour = Date.now() - 3 * 60 * 60 * 1000;
     console.log("Last hour", lastHour);
-    // const bot = new Bot();
-    // await bot.login({
-    //     identifier: process.env.BSKY_USERNAME!,
-    //     password: process.env.BSKY_PASSWORD!,
-    // });
-    // let emitter = new BotEventEmitter({ "processFrom": lastHour}, bot);
-    // await emitter.poll();
-    // let response = console.log(emitter);
-    // res.send(response);
-
 
     const agent = new AtpAgent({
         service: 'https://bsky.social',
@@ -110,33 +100,46 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
                     const post = data["posts"][0];
                     const text = post["record"]["text"];
                     const text_length = text.length;
+                    console.log("Text", text);
                     let currentGram = text.slice(text_length - order, text_length);
+                    console.log("Current gram", currentGram);
                     generateText(currentGram, order).then((generated_text) => {
+                        console.log("Generated text", generated_text);
+                        let post_response = {};
                         if (notification.reason === "mention") {
-                            agent.post({
-                                "text": generated_text,
-                            })
+                            console.log("Mention");
+                            const mention_handle = "@" + post["author"]["handle"];
+                            const post_text = mention_handle + " " + generated_text;
+                            console.log("Post text", post_text);
+                            post_response = {
+                                $type: "app.bsky.feed.post",
+                                "text": post_text,
+                                "facets": [{
+                                    "index": { "byteStart": 0, "byteEnd": mention_handle.length },
+                                    "features": [{
+                                        "$type": "app.bsky.richtext.facet#mention",
+                                        "did": post["author"]["did"],
+                                    }],
+                                }]
+                            };
                         }
+                        else if (notification.reason === "reply") {
+                            console.log("Reply");
+                            const post_text = generated_text;
+                            console.log("Post text", post_text);
+                            post_response = {
+                                $type: "app.bsky.feed.post",
+                                "text": post_text,
+                                "reply": post["record"]["reply"],
+                            };
+                        }
+                        agent.post(post_response);
                     });
                 });
-            });
-            // if (notification.reason === "mention") {
 
-            // let currentGram = text.slice(index + 1, index + order + 1);
-            // generateText(currentGram, order).then((generated_text) => {
-            // agent.reply(notification.id, generated_text);
-            // });
-            // }
-            // if (notification.type === "mention") {
-            //     let text = notification.text;
-            //     let index = text.indexOf(" ");
-            //     let currentGram = text.slice(index + 1, index + order + 1);
-            //     generateText(currentGram, order).then((generated_text) => {
-            //         // agent.reply(notification.id, generated_text);
-            //     });
-            // }
-        }
-        res.send(notifications);
+            });
+     }
+        res.send({"numberOfNotifications": recentNotification.length});
     });
 });
 

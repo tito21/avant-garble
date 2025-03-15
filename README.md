@@ -1,6 +1,6 @@
 # AvantGarble - Dadaist chatbot
 
-<p style="text-align: center;">
+<p align="center">
 <img src="client/public/logo.svg"/>
 </p>
 
