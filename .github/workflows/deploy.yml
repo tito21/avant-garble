@@ -35,14 +35,14 @@ jobs:
       with:
         username: 'oauth2accesstoken'
         password: '${{ steps.auth.outputs.access_token }}'
-        registry: 'europe-west2-docker.pkg.dev'
+        registry: 'eu.gcr.io'
 
         # docker build -t eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }} .
         # docker push eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
     - name: Build and Push Container
       run: |-
-        docker build -t "europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}" ./
-        docker push "europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}"
+        docker build -t "eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}" ./
+        docker push "eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}"
 
     # END - Docker auth and build
 
@@ -53,7 +53,7 @@ jobs:
         service: avant-garble
         region: europe-west2
         # NOTE: If using a pre-built image, update the image name here
-        image: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
+        image: eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
         # NOTE: You can also set env variables here:
         env_vars: |
           BSKY_USERNAME=${{ secrets.BSKY_USERNAME }}
