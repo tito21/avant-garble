@@ -35,14 +35,14 @@ jobs:
       with:
         username: 'oauth2accesstoken'
         password: '${{ steps.auth.outputs.access_token }}'
-        registry: 'eu.gcr.io'
+        registry: 'eu-docker.pkg.dev'
 
+        # docker build -t eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }} .
+        # docker push eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
     - name: Build and Push Container
-        # docker build -t "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}" ./
-        # docker push "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}"
       run: |-
-        docker build -t eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }} .
-        docker push eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
+        docker build -t "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}" ./
+        docker push "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}"
 
     # END - Docker auth and build
 
@@ -51,7 +51,7 @@ jobs:
       uses: google-github-actions/deploy-cloudrun@v0
       with:
         service: avant-garble
-        region: europe-west1
+        region: europe-west2
         # NOTE: If using a pre-built image, update the image name here
         image: eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
         # NOTE: You can also set env variables here:
