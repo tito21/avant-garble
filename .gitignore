@@ -137,3 +137,4 @@ ngrams
 app.yaml
 deploy.sh
 bin
+.secrets
