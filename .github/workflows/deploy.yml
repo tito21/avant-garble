@@ -46,4 +46,4 @@ jobs:
           --platform managed \
           --region europe-west2 \
           --allow-unauthenticated \
-          --set-env-vars BSKY_USERNAME=${{ BSKY_USERNAME }},BSKY_PASSWORD=${{ BSKY_PASSWORD }}
+          --set-env-vars BSKY_USERNAME=${{ secrets.BSKY_USERNAME }},BSKY_PASSWORD=${{ secrets.BSKY_PASSWORD }}
