@@ -90,6 +90,7 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
         let recentNotification = notifications["notifications"].filter((notification: any) => {
             return Date.parse(notification["record"]["createdAt"]) > lastHour
         });
+        console.log("Number of recent notification", recentNotification.length);
         for (let notification of recentNotification) {
             console.log("Notification", notification);
             const params = new URLSearchParams();
