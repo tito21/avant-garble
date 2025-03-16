@@ -139,7 +139,7 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
 
             });
      }
-        res.send({"numberOfNotifications": recentNotification.length});
+    res.send({"numberOfNotifications": recentNotification.length});
     });
 });
 
