@@ -79,7 +79,8 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
     });
 
     const bluesky_url = "https://public.api.bsky.app/";
-    await agent.login({ identifier: process.env.BSKY_USERNAME!, password: process.env.BSKY_PASSWORD! });
+    let agent_response = await agent.login({ identifier: process.env.BSKY_USERNAME!, password: process.env.BSKY_PASSWORD! });
+    console.log("Logged in", agent_response.success);
     let params = {
         "reasons": ["reply", "mention"]
     };
