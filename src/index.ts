@@ -46,7 +46,7 @@ app.get('/get-text', (req: Request, res: Response) => {
 
 app.ws('/get-text', (ws, req) => {
     ws.on('message', async (msg) => {
-        // console.log("Message", msg);
+        console.log("Message", msg);
         let currentGram = msg.toString();
         let num_letters = Math.floor(70 + Math.random() * 229);
         // let num_letters = 5;
