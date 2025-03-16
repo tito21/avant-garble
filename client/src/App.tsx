@@ -93,7 +93,7 @@ function App() {
       setStatesResponse(text => text);
       let fullText = `${responseState}`;
       setStatesBubble(prevStateArray => {
-        prevStateArray[prevStateArray.length - 1] = <ChatBubble text={fullText} direction='left' id={responseNumberState} finished={false}></ChatBubble>;
+        prevStateArray[prevStateArray.length - 1] = <ChatBubble text={fullText} direction='left' id={responseNumberState} finished={true}></ChatBubble>;
         return [...prevStateArray];
       });
 
