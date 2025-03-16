@@ -3,8 +3,12 @@ on:
   push:
     branches:
       - main
-on: workflow_dispatch
-
+  workflow_dispatch:
+    inputs:
+      docker_image_name:
+        description: 'Name of the Docker image to deploy'
+        required: true
+        default: 'avant-garble'
 
 jobs:
   deploy:
