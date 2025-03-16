@@ -41,8 +41,8 @@ jobs:
         # docker push eu.gcr.io/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
     - name: Build and Push Container
       run: |-
-        docker build -t "europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}" ./
-        docker push "europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}"
+        docker build -t "europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble-image:${{ github.sha }}" ./
+        docker push "europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble-image:${{ github.sha }}"
 
     # END - Docker auth and build
 
