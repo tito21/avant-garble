@@ -64,12 +64,12 @@ app.ws('/get-text', (ws, req) => {
             }
         }
         ws.send("Done1234");
+        console.log("Done with message");
     });
 });
 
 
 app.get('/poll-bot', async (req: Request, res: Response) => {
-
 
     // let lastHour = Date.now() - 2 * 60 * 60 * 1000;
     let lastHour = Date.now() - 2 * 60 * 1000;
@@ -92,7 +92,7 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
         });
         console.log("Number of recent notification", recentNotification.length);
         for (let notification of recentNotification) {
-            console.log("Notification", notification);
+            // console.log("Notification", notification);
             const params = new URLSearchParams();
             params.append("uris", notification["uri"]);
             const url = `${bluesky_url}xrpc/app.bsky.feed.getPosts?${params}`;
