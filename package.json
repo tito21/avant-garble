@@ -7,8 +7,8 @@
     "gcp-build": "npm run build",
     "client-build": "cd ./client && npm run build && cd ..",
     "build": "npm run client-build && tsc",
-    "start": "node --env-file=.env .",
-    "dev": "tsx watch --env-file=.env ./src/index.ts"
+    "start": "node .",
+    "dev": "tsx watch ./src/index.ts"
   },
   "keywords": [],
   "author": "Alberto Di Biase",
