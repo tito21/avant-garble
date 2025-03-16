@@ -136,3 +136,4 @@ ngrams
 .gcloudignore
 app.yaml
 deploy.sh
+bin
