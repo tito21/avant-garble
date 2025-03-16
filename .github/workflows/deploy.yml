@@ -39,8 +39,8 @@ jobs:
 
     - name: Build and Push Container
       run: |-
-        docker build -t "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble-image:${{ github.sha }}" ./
-        docker push "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble-image:${{ github.sha }}"
+        docker build -t "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}" ./
+        docker push "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}"
 
     # END - Docker auth and build
 
