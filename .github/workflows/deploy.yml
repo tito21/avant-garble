@@ -51,7 +51,6 @@ jobs:
       with:
         service: avant-garble
         region: europe-west2
-        allow-unauthenticated: true
 
         # NOTE: If using a pre-built image, update the image name here
         image: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
