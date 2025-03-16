@@ -48,17 +48,17 @@ app.get('/get-text', (req: Request, res: Response) => {
 app.ws('/get-text', (ws, req) => {
     ws.on('message', async (msg) => {
         console.log("Message", msg);
-        let currentGram = msg.toString();
+        let currentNgram = msg.toString();
         let num_letters = Math.floor(70 + Math.random() * 229);
         // let num_letters = 5;
         for (let i = 0; i < num_letters; i++) {
             try {
-                let text = await generateText(currentGram, order, 1)
+                let text = await generateText(currentNgram, order, 1)
                 ws.send(text);
-                currentGram += text;
+                currentNgram += text;
                 // console.log("text", text);
                 // console.log("currentGram", currentGram);
-                currentGram = currentGram.slice(currentGram.length - order, currentGram.length);
+                currentNgram = currentNgram.slice(currentNgram.length - order, currentNgram.length);
             }
             catch (error) {
                 console.error("Error", error);
@@ -100,55 +100,65 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
             console.log("URL", url);
             fetch(url).then((post_response) => {
                 // console.log("Post response", post_response);
-                post_response.json().then((data: any) => {
+                post_response.json().then(async (data: any) => {
                     const post = data["posts"][0];
                     const text = post["record"]["text"];
                     const text_length = text.length;
                     console.log("Text", text);
-                    let currentGram = text.slice(text_length - order, text_length);
-                    console.log("Current gram", currentGram);
-                    generateText(currentGram, order).then((generated_text) => {
-                        console.log("Generated text", generated_text);
-                        let post_response = {};
-                        if (notification.reason === "mention") {
-                            console.log("Mention");
-                            const post_text = generated_text;
-                            console.log("Post text", post_text);
-                            post_response = {
-                                $type: "app.bsky.feed.post",
-                                "text": post_text,
-                                "reply": {
-                                    "root": {
-                                        "uri": post["uri"],
-                                        "cid": post["cid"]
-                                    },
-                                    "parent": {
-                                        "uri": post["uri"],
-                                        "cid": post["cid"]
-                                    }
+                    let currentNgram = text.slice(text_length - order, text_length);
+                    if (currentNgram.length < order) {
+                        currentNgram += " ".repeat(order - currentNgram.length);
+                      }
+                    console.log("Current gram", currentNgram);
+                    let generated_text = currentNgram;
+                    let num_letters = Math.floor(70 + Math.random() * 229);
+                    for (let i = 0; i < num_letters; i++) {
+                        const text = await generateText(currentNgram, order, 1);
+                        generated_text += text;
+                        currentNgram += text;
+                        // console.log("text", text);
+                        // console.log("currentGram", currentGram);
+                        currentNgram = currentNgram.slice(currentNgram.length - order, currentNgram.length);
+                    }
+                    console.log("Generated text", generated_text);
+                    let post_response = {};
+                    if (notification.reason === "mention") {
+                        console.log("Mention");
+                        const post_text = generated_text;
+                        console.log("Post text", post_text);
+                        post_response = {
+                            $type: "app.bsky.feed.post",
+                            "text": post_text,
+                            "reply": {
+                                "root": {
+                                    "uri": post["uri"],
+                                    "cid": post["cid"]
+                                },
+                                "parent": {
+                                    "uri": post["uri"],
+                                    "cid": post["cid"]
                                 }
-                            };
-                        }
-                        else if (notification.reason === "reply") {
-                            console.log("Reply");
-                            const post_text = generated_text;
-                            console.log("Post text", post_text);
-                            post_response = {
-                                $type: "app.bsky.feed.post",
-                                "text": post_text,
-                                "reply": {
-                                    "root": post["record"]["reply"]["root"],
-                                    "parent": {
-                                        "uri": post["uri"],
-                                        "cid": post["cid"]
-                                    }
+                            }
+                        };
+                    }
+                    else if (notification.reason === "reply") {
+                        console.log("Reply");
+                        const post_text = generated_text;
+                        console.log("Post text", post_text);
+                        post_response = {
+                            $type: "app.bsky.feed.post",
+                            "text": post_text,
+                            "reply": {
+                                "root": post["record"]["reply"]["root"],
+                                "parent": {
+                                    "uri": post["uri"],
+                                    "cid": post["cid"]
                                 }
-                            };
-                        }
-                        agent.post(post_response);
-                    });
+                            }
+                        };
+                    }
+                    agent.post(post_response);
                 });
-
             });
         }
         res.send({ "numberOfNotifications": recentNotification.length });

@@ -32,9 +32,9 @@
 
 .chat-bubble-finished {
   width: 100%;
-  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
   color: white;
   text-align: right;
+  margin-top: -1em;
 }
 
 .chat-bubble-finished span{
