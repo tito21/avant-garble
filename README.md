@@ -6,7 +6,9 @@
 
 ---
 
-Chat with the bot [here](https://avant-garble-68750635052.europe-west2.run.app)
+Chat with the bot [here](https://avant-garble-68750635052.europe-west2.run.app).
+Or mention [@avantgarble.bsky.social](https://bsky.app/profile/avantgarble.bsky.social)
+in a Bluesky post. (currently it only answers once a day).
 
 ## Context
 

@@ -73,7 +73,7 @@ app.ws('/get-text', (ws, req) => {
 app.get('/poll-bot', async (req: Request, res: Response) => {
 
     // let lastHour = Date.now() - 2 * 60 * 60 * 1000;
-    let lastHour = Date.now() - 2 * 60 * 1000;
+    let lastHour = Date.now() - 24 * 60 * 60 * 1000;
     console.log("Last hour", lastHour);
 
     const agent = new AtpAgent({
@@ -117,7 +117,7 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
                         generated_text += text;
                         currentNgram += text;
                         // console.log("text", text);
-                        // console.log("currentGram", currentGram);
+                        // console.log("currentGram", currentNgram);
                         currentNgram = currentNgram.slice(currentNgram.length - order, currentNgram.length);
                     }
                     console.log("Generated text", generated_text);
