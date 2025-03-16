@@ -36,8 +36,9 @@ function App() {
     if (currentNgram.length < order) {
       currentNgram += " ".repeat(order - currentNgram.length);
     }
+    setStatesResponse("");
     // let url = `get-text?currentGram=${currentNgram}`;
-    setStatesBubble(prevStateArray => [...prevStateArray, <ChatBubble text={value} direction='right' id={responseNumberState}></ChatBubble>]);
+    setStatesBubble(prevStateArray => [...prevStateArray, <ChatBubble text={value} direction='right' id={responseNumberState} finished={false}></ChatBubble>]);
     setStatesResponseNumber(responseNumberState + 1);
 
     sendMessage(currentNgram);
@@ -45,7 +46,7 @@ function App() {
     // fetch(url).then(response => response.json()).then(data => {
     //   console.log("Response", data);
     // currentResponseBubble = ChatBubbleResponse({text: "", id: responseNumberState});
-    currentResponseBubble = <ChatBubble text={responseState} direction='left' id={responseNumberState}></ChatBubble>
+    currentResponseBubble = <ChatBubble text={responseState} direction='left' id={responseNumberState} finished={false}></ChatBubble>
     setStatesBubble(prevStateArray => [...prevStateArray, currentResponseBubble]);
     setStatesResponseNumber(responseNumberState + 1);
     // }).catch(error => {
@@ -60,7 +61,7 @@ function App() {
   const wsUrl = url.href // => ws://www.example.com:9999/path/to/websocket
 
   const {
-    sendMessage,
+    sendMessage
   } = useWebSocket(wsUrl, {
     shouldReconnect: () => true,
     onMessage: (event) => {
@@ -68,7 +69,7 @@ function App() {
       if (event.data === "Done1234") {
         let fullText = `${responseState}`;
         setStatesBubble(prevStateArray => {
-          prevStateArray[prevStateArray.length - 1] = <ChatBubble text={fullText} direction='left' id={responseNumberState}></ChatBubble>;
+          prevStateArray[prevStateArray.length - 1] = <ChatBubble text={fullText} direction='left' id={responseNumberState} finished={true}></ChatBubble>;
           return [...prevStateArray];
         });
         setStatesResponse("");
@@ -78,7 +79,7 @@ function App() {
       setStatesResponse(text => text + event.data);
       let fullText = `${responseState}`;
       setStatesBubble(prevStateArray => {
-        prevStateArray[prevStateArray.length - 1] = <ChatBubble text={fullText} direction='left' id={responseNumberState}></ChatBubble>;
+        prevStateArray[prevStateArray.length - 1] = <ChatBubble text={fullText} direction='left' id={responseNumberState} finished={false}></ChatBubble>;
         return [...prevStateArray];
       });
     },

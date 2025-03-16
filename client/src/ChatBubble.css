@@ -29,3 +29,14 @@
   background-color: #333;
   margin-left: calc(40% - 30px);
 }
+
+.chat-bubble-finished {
+  width: 100%;
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
+  color: white;
+  text-align: right;
+}
+
+.chat-bubble-finished span{
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);;
+}
