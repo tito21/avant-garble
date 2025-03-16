@@ -25,18 +25,16 @@ jobs:
       uses: 'google-github-actions/auth@v2'
       with:
         create_credentials_file: true
-        # token_format: 'access_token'
-        # project_id: ${{ secrets.GCP_PROJECT_ID }}
         workload_identity_provider: ${{ secrets.WIF_PROVIDER  }}
         service_account: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
     - name: Configure Docker
       run: |
-        gcloud auth configure-docker
+        gcloud auth configure-docker europe-west2-docker.pkg.dev
 
     - name: Build Docker Image
       run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest .
-    
+
     - name: Push Docker Image
       run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
