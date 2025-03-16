@@ -13,8 +13,9 @@ async function generateText(currentGram: string, order = 3, num_letters: number 
     num_letters = num_letters || Math.floor(70 + Math.random() * 229);
     // let num_letters = 2;
     // console.log("Number of letters", num_letters);
+    let possibilities: NgramData = [];
     for (let i = 0; i < num_letters; i++) {
-        let possibilities: NgramData = await getNgramDataForKey(currentGram);
+        possibilities = await getNgramDataForKey(currentGram);
         let next = "";
         if (possibilities.length > 0) {
             let index = Math.floor(Math.random() * possibilities.length);
