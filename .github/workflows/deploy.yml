@@ -35,7 +35,7 @@ jobs:
       with:
         username: 'oauth2accesstoken'
         password: '${{ steps.auth.outputs.access_token }}'
-        registry: 'eu-docker.pkg.dev'
+        registry: 'eu.gcr.io'
 
     - name: Build and Push Container
         # docker build -t "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble:${{ github.sha }}" ./
