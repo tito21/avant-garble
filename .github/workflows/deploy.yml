@@ -37,17 +37,22 @@ jobs:
         password: '${{ steps.auth.outputs.access_token }}'
         registry: 'eu-docker.pkg.dev'
 
-    - name: Build Docker Image
-      run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest .
+    - name: Build and Push Container
+      run: |-
+        docker build -t "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}" ./
+        docker push "eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}"
 
-    - name: Push Docker Image
-      run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+    # END - Docker auth and build
 
     - name: Deploy to Cloud Run
-      run: |
-        gcloud run deploy avant-garble \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest \
-          --platform managed \
-          --region europe-west2 \
-          --allow-unauthenticated \
-          --set-env-vars BSKY_USERNAME=${{ secrets.BSKY_USERNAME }},BSKY_PASSWORD=${{ secrets.BSKY_PASSWORD }}
+      id: deploy
+      uses: google-github-actions/deploy-cloudrun@v0
+      with:
+        service: avant-garble
+        region: europe-west1
+        # NOTE: If using a pre-built image, update the image name here
+        image: eu-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
+        # NOTE: You can also set env variables here:
+        env_vars: |
+          BSKY_USERNAME=${{ secrets.BSKY_USERNAME }}
+          BSKY_PASSWORD=${{ secrets.BSKY_PASSWORD }}
