@@ -19,10 +19,10 @@ jobs:
       uses: 'google-github-actions/auth@v2'
       with:
         create_credentials_file: true
-        token_format: 'access_token'
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        # token_format: 'access_token'
+        # project_id: ${{ secrets.GCP_PROJECT_ID }}
         workload_identity_provider: ${{ secrets.WIF_PROVIDER  }}
-        # service_account: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+        service_account: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
     - name: Configure Docker
       run: |
@@ -35,7 +35,7 @@ jobs:
 
     - name: Deploy to Cloud Run
       run: |
-        gcloud run deploy $SERVICE_NAME \
+        gcloud run deploy avant-garble \
           --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest \
           --platform managed \
           --region europe-west2 \
