@@ -53,7 +53,7 @@ jobs:
         region: europe-west2
 
         # NOTE: If using a pre-built image, update the image name here
-        image: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble-image:${{ github.sha }}
+        image: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/avant-garble/avant-garble-image:${{ github.sha }}
         # NOTE: You can also set env variables here:
         env_vars: |
           BSKY_USERNAME=${{ secrets.BSKY_USERNAME }}
