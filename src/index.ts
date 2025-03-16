@@ -106,7 +106,7 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
                     console.log("Text", text);
                     let currentGram = text.slice(text_length - order, text_length);
                     console.log("Current gram", currentGram);
-                    generateText(currentGram, order, 3).then((generated_text) => {
+                    generateText(currentGram, order).then((generated_text) => {
                         console.log("Generated text", generated_text);
                         let post_response = {};
                         if (notification.reason === "mention") {

@@ -61,7 +61,7 @@ function App() {
   const wsUrl = url.href // => ws://www.example.com:9999/path/to/websocket
 
   const {
-    sendMessage
+    sendMessage,
   } = useWebSocket(wsUrl, {
     shouldReconnect: () => true,
     onMessage: (event) => {
@@ -87,7 +87,17 @@ function App() {
       console.error("Error", event);
       setStatesBubble(prevStateArray => [...prevStateArray, <ChatErrorBubble text='Error getting response'></ChatErrorBubble>]);
       setStatesResponse("");
-    }
+    },
+    onClose: (event) => {
+      console.log("Close", event);
+      setStatesResponse(text => text);
+      let fullText = `${responseState}`;
+      setStatesBubble(prevStateArray => {
+        prevStateArray[prevStateArray.length - 1] = <ChatBubble text={fullText} direction='left' id={responseNumberState} finished={false}></ChatBubble>;
+        return [...prevStateArray];
+      });
+
+    },
   });
 
 
