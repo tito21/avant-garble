@@ -71,7 +71,8 @@ app.ws('/get-text', (ws, req) => {
 app.get('/poll-bot', async (req: Request, res: Response) => {
 
 
-    let lastHour = Date.now() - 3 * 60 * 60 * 1000;
+    // let lastHour = Date.now() - 2 * 60 * 60 * 1000;
+    let lastHour = Date.now() - 2 * 60 * 1000;
     console.log("Last hour", lastHour);
 
     const agent = new AtpAgent({
@@ -104,24 +105,26 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
                     console.log("Text", text);
                     let currentGram = text.slice(text_length - order, text_length);
                     console.log("Current gram", currentGram);
-                    generateText(currentGram, order).then((generated_text) => {
+                    generateText(currentGram, order, 3).then((generated_text) => {
                         console.log("Generated text", generated_text);
                         let post_response = {};
                         if (notification.reason === "mention") {
                             console.log("Mention");
-                            const mention_handle = "@" + post["author"]["handle"];
-                            const post_text = mention_handle + " " + generated_text;
+                            const post_text = generated_text;
                             console.log("Post text", post_text);
                             post_response = {
                                 $type: "app.bsky.feed.post",
                                 "text": post_text,
-                                "facets": [{
-                                    "index": { "byteStart": 0, "byteEnd": mention_handle.length },
-                                    "features": [{
-                                        "$type": "app.bsky.richtext.facet#mention",
-                                        "did": post["author"]["did"],
-                                    }],
-                                }]
+                                "reply": {
+                                    "root": {
+                                        "uri": post["uri"],
+                                        "cid": post["cid"]
+                                    },
+                                    "parent": {
+                                        "uri": post["uri"],
+                                        "cid": post["cid"]
+                                    }
+                                }
                             };
                         }
                         else if (notification.reason === "reply") {
@@ -131,7 +134,13 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
                             post_response = {
                                 $type: "app.bsky.feed.post",
                                 "text": post_text,
-                                "reply": post["record"]["reply"],
+                                "reply": {
+                                    "root": post["record"]["reply"]["root"],
+                                    "parent": {
+                                        "uri": post["uri"],
+                                        "cid": post["cid"]
+                                    }
+                                }
                             };
                         }
                         agent.post(post_response);
@@ -139,8 +148,8 @@ app.get('/poll-bot', async (req: Request, res: Response) => {
                 });
 
             });
-     }
-    res.send({"numberOfNotifications": recentNotification.length});
+        }
+        res.send({ "numberOfNotifications": recentNotification.length });
     });
 });
 
