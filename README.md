@@ -1,3 +1,8 @@
+
+> [!WARNING]
+> This used a slower model and is now archived
+> The new version is avilable (avant-garble-python](https://github.com/tito21/avant-garble-python/tree/main)
+
 # AvantGarble - Dadaist chatbot
 
 <p align="center">
@@ -47,3 +52,4 @@ at a character level. The n-grams come from the  Blog Authorship Corpus and are 
 Build the bot with `npm run build` and run with `npm run start`.
 
 For deployment I use google cloud run synched with Github.
+
